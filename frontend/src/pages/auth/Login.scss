@@ -1,0 +1,37 @@
+@use "@/styles/variables" as *;
+
+.login {
+    height: 100vh;
+    .inner {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        .login-box{
+            // flex: 1;
+            width: 100%;
+            nav {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .login-form {
+                margin:  $space-lg 0;
+
+                .login-btn-wrap {
+                    margin-top: $space-lg;
+                }
+            }
+
+            .signup-now{
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+                gap:$space-md;
+                span {
+                    color:$muted;
+                }
+            }
+            }
+    }
+}

@@ -6,8 +6,8 @@ $bg: #07010f;
 $fg: rgb(255, 255, 255);
 $muted: rgba(255, 255, 255, 0.65);
 
-$purple: #7c3aed;
-$purple-2: #a855f7;
+$purple: #8338EC;
+$purple-2: #B923FF;
 
 $line: rgba(255, 255, 255, 0.14);
 $card: rgba(255, 255, 255, 0.06);
@@ -60,6 +60,7 @@ $space-xl: 36px;
 // Shadow
 // =============================
 
+$shadow-intro: 0 10px 10px rgba(0, 0, 0, 0.747);
 $shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
 $shadow-sm: 0 8px 10px rgba(0, 0, 0, 0.35);
 
