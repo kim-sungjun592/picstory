@@ -44,4 +44,14 @@
 
         }
     }
+    &.primary {
+        background: linear-gradient(90deg,
+      $purple,
+      $purple-2 );
+      width: 100%;
+      &:hover {
+        transform: translateY(0);
+        box-shadow: $shadow-sm;
+      }
+    }
 }
