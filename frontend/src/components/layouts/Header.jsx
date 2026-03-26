@@ -2,6 +2,7 @@ import React from 'react'
 import './Header.scss'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../ui/Button'
+import { logout } from '@/api/auth.api'
 const Header = () => {
   const navigate = useNavigate()
 
@@ -20,7 +21,16 @@ const Header = () => {
     }
   ]
 
-  
+
+  const handleLogout = async () => {
+    try {
+      await logout()
+      navigate("/")
+
+    } catch (error) {
+      alert(error.message || '로그아웃 오류')
+    }
+  }
   return (
     <header>
       <div className="inner">
@@ -29,18 +39,21 @@ const Header = () => {
             <img src="/images/logo.svg" alt="logo" />
           </Link>
         </h1>
-        <ul>
-          {menus.map((menu, i) => (
-            <li key={i}>
-              <Button
-                icons
-                className="sq"
-                onClick={() => navigate(menu.link)}
-                text={menu.name} />
-            </li>
-          ))}
-        </ul>
-        <Button text="로그아웃" />
+        <div className="right">
+
+          <ul>
+            {menus.map((menu, i) => (
+              <li key={i}>
+                <Button
+                  icons
+                  className="sq"
+                  onClick={() => navigate(menu.link)}
+                  text={menu.name} />
+              </li>
+            ))}
+          </ul>
+          <Button text="로그아웃" onClick={handleLogout} />
+        </div>
       </div>
     </header>
   )
