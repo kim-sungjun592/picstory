@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import Button from '../../components/ui/Button'
+import Button from '@/components/ui/Button'
 import './Auth.scss'
 import Input from '@/components/ui/Input'
 import { Link, useNavigate } from 'react-router-dom'
 import { login as loginApi } from '@/api/auth.api'
-import { useAuth } from '../../store/auth.store'
+import { useAuth } from '@/store/auth.store'
 const Login = () => {
 
   const navigate = useNavigate()
@@ -48,7 +48,7 @@ const Login = () => {
         password: form.password
       })
 
-      login(data)
+     await login(data)
       navigate('/app')
 
     } catch (error) {

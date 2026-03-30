@@ -26,6 +26,7 @@ const Header = () => {
     try {
 
       await logoutApi()
+      
       navigate("/")
 
     } catch (error) {
