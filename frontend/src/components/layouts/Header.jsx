@@ -3,8 +3,10 @@ import './Header.scss'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../ui/Button'
 import { logout as logoutApi } from '@/api/auth.api'
+import { useAuth } from '@/store/auth.store'
 const Header = () => {
   const navigate = useNavigate()
+  const { logout } = useAuth()
 
   const menus = [
     {
@@ -26,7 +28,7 @@ const Header = () => {
     try {
 
       await logoutApi()
-      
+      logout()
       navigate("/")
 
     } catch (error) {
