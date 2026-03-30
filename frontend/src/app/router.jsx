@@ -5,8 +5,14 @@ import PublicLayout from './PublicLayout'
 import Landing from '../pages/landing/Landing'
 import Login from '../pages/auth/Login'
 import Signup from '../pages/auth/Signup'
-import Dashboard from '../pages/dashboard/Dashboard'
 import ProtectRoute from '../store/ProtectRoute'
+import PostDashboard from '../pages/posts/PostDashboard'
+import PostAll from '../pages/posts/PostAll'
+import PostEdit from '../pages/posts/PostEdit'
+import PostCreate from '../pages/posts/PostCreate'
+import PostDetail from '../pages/posts/PostDetail'
+import Setting from '../pages/setting/Setting'
+import Profile from '../pages/profile/Profile'
 export const router = createBrowserRouter([
   {
     // 공개영역
@@ -18,17 +24,20 @@ export const router = createBrowserRouter([
     ]
   }, {
     // 보호영역
-    path:'/app',
-    element:(
+    path: '/app',
+    element: (
       <ProtectRoute>
-        <ProtectApp/>
+        <ProtectApp />
       </ProtectRoute>
     ),
-    children:[
-      {
-        index:true,
-        element:<Dashboard/>
-      }
+    children: [
+      { index: true, element: <PostDashboard /> },
+      { path:'posts/all', element: <PostAll /> },
+      { path:'posts/new', element: <PostCreate /> },
+      { path:'posts/:id', element: <PostDetail /> },
+      { path:'posts/:id/edit', element: <PostEdit /> },
+      { path:'profile', element: <Profile /> },
+      { path:'setting', element: <Setting /> },
     ]
   }
 ])
