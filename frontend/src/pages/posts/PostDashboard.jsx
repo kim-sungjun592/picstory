@@ -15,16 +15,20 @@ const PostDashboard = () => {
 
     const [posts,setPosts] =useState([])
     const navigate = useNavigate()
-
+    const [fetchError, setFetchError] = useState('')
 
     useEffect(()=>{
-
+        setFetchError('')
         const fetchPosts = async()=>{
             try {
                 const response =await getPosts()
 
                 console.log(response)
-                const rawPosts =Array.isArray(response)? response:[]
+                const rawPosts = Array.isArray(response)
+                ? response
+                : Array.isArray(response?.data)
+                  ? response.data
+                  : []
 
                 const mappedPosts = (rawPosts||[]).map((post)=>({
                     id:post.id,
@@ -37,7 +41,7 @@ const PostDashboard = () => {
 
                 setPosts(mappedPosts)
             } catch (error) {
-                console.error('게시글 조회 실패',error)
+                setFetchError(error?.response?.data?.message || error.message || '게시글 조회 실패')
                 setPosts([])
             }
 
