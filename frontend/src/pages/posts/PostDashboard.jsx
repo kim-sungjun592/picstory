@@ -3,7 +3,7 @@ import PostList from '@/components/posts/PostList'
 import TagFilterBar from '@/components/posts/TagFilterBar'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
-import { useState,useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import './PostPagesAll.scss'
 import { getPosts } from '@/api/post.api'
 import { useNavigate } from 'react-router-dom'
@@ -11,32 +11,32 @@ const PostDashboard = () => {
 
     const [selectedTag, setSelectedTag] = useState('전체')
     const [searchKeyword, setSearchKeyword] = useState('')
-    const [tags,setTags] = useState(['전체'])
+    const [tags, setTags] = useState(['전체'])
 
-    const [posts,setPosts] =useState([])
+    const [posts, setPosts] = useState([])
     const navigate = useNavigate()
     const [fetchError, setFetchError] = useState('')
 
-    useEffect(()=>{
+    useEffect(() => {
         setFetchError('')
-        const fetchPosts = async()=>{
+        const fetchPosts = async () => {
             try {
-                const response =await getPosts()
+                const response = await getPosts()
 
                 console.log(response)
                 const rawPosts = Array.isArray(response)
-                ? response
-                : Array.isArray(response?.data)
-                  ? response.data
-                  : []
+                    ? response
+                    : Array.isArray(response?.data)
+                        ? response.data
+                        : []
 
-                const mappedPosts = (rawPosts||[]).map((post)=>({
-                    id:post.id,
-                    category:post.category,
-                    title:post.title,
-                    content:post.content,
-                    tags:post.tags ||[],
-                    thumbnail:post.imageUrl || ''
+                const mappedPosts = (rawPosts || []).map((post) => ({
+                    id: post.id,
+                    category: post.category,
+                    title: post.title,
+                    content: post.content,
+                    tags: post.tags || [],
+                    thumbnail: post.imageUrl || ''
                 }))
 
                 setPosts(mappedPosts)
@@ -47,7 +47,7 @@ const PostDashboard = () => {
 
         }
         fetchPosts()
-    },[])
+    }, [])
 
 
     const filteredByTag =
@@ -76,12 +76,18 @@ const PostDashboard = () => {
     return (
         <section className='page post-section'>
             <div className="inner">
-                <PostHeader onCreate={handleCreatePost} />
+                <PostHeader
+                    onClick={handleCreatePost}
+                    title='게시글을 작성하세요'
+                    showButton
+                    buttonText="작성하기"
+                    buttonClass="primary"
+                />
                 <div className="input-post">
                     <Input
-                    placeholder="게시글 제목 또는 내용을 검색하세요"
-                    value={searchKeyword}
-                    onChange={(e)=>setSearchKeyword(e.target.value)}
+                        placeholder="게시글 제목 또는 내용을 검색하세요"
+                        value={searchKeyword}
+                        onChange={(e) => setSearchKeyword(e.target.value)}
                     />
                 </div>
                 <div className="tags-wrapper">

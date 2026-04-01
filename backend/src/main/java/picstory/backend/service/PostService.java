@@ -60,6 +60,28 @@ public class PostService {
     }
 
     @Transactional
+    public PostResponse findById(Long id, HttpSession session){
+        if(id==null){
+            throw  new IllegalArgumentException("게시글 id를 확인해 주세요");
+        }
+
+        Long memberId = (Long) session.getAttribute(LOGIN_MEMBER_ID);
+
+        if(memberId==null){
+            throw new IllegalArgumentException("로그인 후 이용해 주세요");
+        }
+        Post post = postRepository.findById(id)
+                .orElseThrow(()->new IllegalArgumentException("게시글을 찾을 수 없습니다."));
+
+
+        if(!post.getMember().getId().equals(memberId)){
+            throw new IllegalArgumentException("본인이 작성한 글만 조회할 수 있습니다.");
+        }
+
+        return  PostResponse.from(post);
+    }
+
+    @Transactional
     public PostResponse update(Long id, UpdatePostRequest request, HttpSession session) {
         Long memberId = (Long) session.getAttribute(LOGIN_MEMBER_ID);
 

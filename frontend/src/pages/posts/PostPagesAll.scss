@@ -18,4 +18,43 @@
             }
         }
     }
+
+    &.post-detail {
+        .inner {
+            .post-card{
+                margin-top: $space-xl;
+                display: flex;
+                flex-direction: column;
+                gap: $space-lg;
+                border:1px solid $gray-200;
+                padding:$space-lg;
+                border-radius: $r-md;
+                color:$bg;
+                
+                .post-card-title{
+                    font-size: $text-xl;
+                    margin: $space-md 0;
+                }
+                .post-card-content{
+                    min-height: 200px;
+                    background-color: $gray-50;
+                    padding:$space-md;
+                    border-radius: $r-sm;
+                }
+
+                .img-wrap{
+                    margin: $space-md 0;
+                }
+            }
+            .btn-wrap {
+                margin-top: $space-xl;
+                display: flex;
+                justify-content: space-between;
+                gap: $space-md;
+                .btn {
+                    flex: 1;
+                }
+            }
+        }
+    }
 }
