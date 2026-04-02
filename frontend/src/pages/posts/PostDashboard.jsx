@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react'
 import './PostPagesAll.scss'
 import { getPosts } from '@/api/post.api'
 import { useNavigate } from 'react-router-dom'
+import useFilteredPosts from '../../hooks/useFilteredPosts'
 const PostDashboard = () => {
 
     const [selectedTag, setSelectedTag] = useState('전체')
@@ -50,25 +51,9 @@ const PostDashboard = () => {
     }, [])
 
 
-    const filteredByTag =
-        selectedTag === '전체'
-            ? posts
-            : posts.filter((post) =>
-                post.tags.includes(selectedTag)
-            )
 
 
-    const filteredPosts = filteredByTag.filter((post) => {
-        const keyword = searchKeyword.toLowerCase().trim()
-
-        if (!keyword) return true
-
-
-        return (
-            post.title.toLowerCase().includes(keyword) ||
-            post.content.toLowerCase().includes(keyword)
-        )
-    })
+    const filteredPosts = useFilteredPosts(posts,selectedTag,searchKeyword)
     const handleCreatePost = () => {
         console.log('새 메모 작성')
         navigate('/app/posts/new')
@@ -99,7 +84,7 @@ const PostDashboard = () => {
                     />
                     <Button text="전체 게시글 보기" className="wh" />
                 </div>
-                <PostList posts={filteredPosts} />
+                <PostList posts={filteredPosts.slice(0,3)} />
             </div>
         </section>
     )

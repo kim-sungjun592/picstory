@@ -57,4 +57,33 @@
             }
         }
     }
+    &.post-all {
+        .btn-wrap {
+            display: flex;
+            justify-content: center;
+            margin-top: $space-xl;
+            gap:$space-md;
+            align-items: center;
+
+            button {
+                background-color: $gray-200;
+                border-radius: $r-xs;
+                padding:$space-sm
+            }
+            ul {
+                display: flex;
+                gap:$space-md;
+                li{
+                    cursor: pointer;
+                    padding:$space-sm;
+
+                    &:hover{
+                        color:$fg;
+                        font-weight: $fw-bold;
+                        background-color: $gray-900;
+                    }
+                }
+            }
+        }
+    }
 }
