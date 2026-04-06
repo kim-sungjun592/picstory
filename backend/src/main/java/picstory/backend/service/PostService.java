@@ -51,6 +51,7 @@ public class PostService {
                 request.category(),
                 request.title(),
                 request.content(),
+                request.imageUrl(),
                 member
         );
 
@@ -60,25 +61,25 @@ public class PostService {
     }
 
     @Transactional
-    public PostResponse findById(Long id, HttpSession session){
-        if(id==null){
-            throw  new IllegalArgumentException("게시글 id를 확인해 주세요");
+    public PostResponse findById(Long id, HttpSession session) {
+        if (id == null) {
+            throw new IllegalArgumentException("게시글 id를 확인해 주세요");
         }
 
         Long memberId = (Long) session.getAttribute(LOGIN_MEMBER_ID);
 
-        if(memberId==null){
+        if (memberId == null) {
             throw new IllegalArgumentException("로그인 후 이용해 주세요");
         }
         Post post = postRepository.findById(id)
-                .orElseThrow(()->new IllegalArgumentException("게시글을 찾을 수 없습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("게시글을 찾을 수 없습니다."));
 
 
-        if(!post.getMember().getId().equals(memberId)){
+        if (!post.getMember().getId().equals(memberId)) {
             throw new IllegalArgumentException("본인이 작성한 글만 조회할 수 있습니다.");
         }
 
-        return  PostResponse.from(post);
+        return PostResponse.from(post);
     }
 
     @Transactional
@@ -89,13 +90,15 @@ public class PostService {
             throw new IllegalArgumentException("로그인 후 이용해 주세요");
         }
         Post post = postRepository.findById(id)
-                .orElseThrow(()->new IllegalArgumentException("게시글이 존재하지 않습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않습니다."));
 
-        if(!post.getMember().getId().equals(memberId)){
+        if (!post.getMember().getId().equals(memberId)) {
             throw new IllegalArgumentException("본인이 작성한 글만 수정 가능");
         }
 
-        post.update(request.category(), request.title(), request.content());
+        post.update(request.category(),
+                request.title(),
+                request.content(), request.imageUrl());
 
         return PostResponse.from(post);
 
@@ -104,16 +107,16 @@ public class PostService {
 
 
     @Transactional
-    public void delete(Long id,HttpSession session){
+    public void delete(Long id, HttpSession session) {
         Long memberId = (Long) session.getAttribute(LOGIN_MEMBER_ID);
 
         if (memberId == null) {
             throw new IllegalArgumentException("로그인 후 이용해 주세요");
         }
         Post post = postRepository.findById(id)
-                .orElseThrow(()->new IllegalArgumentException("게시글이 존재하지 않습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않습니다."));
 
-        if(!post.getMember().getId().equals(memberId)){
+        if (!post.getMember().getId().equals(memberId)) {
             throw new IllegalArgumentException("본인이 작성한 글만 삭제 가능");
         }
         postRepository.delete(post);
