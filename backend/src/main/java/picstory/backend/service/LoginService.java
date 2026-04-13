@@ -11,6 +11,8 @@ import picstory.backend.web.dto.LoginRequest;
 import picstory.backend.web.dto.MemberResponse;
 import picstory.backend.web.dto.UpdateProfileRequest;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -36,22 +38,32 @@ public class LoginService {
         return MemberResponse.from(member);
     }
 
-    public MemberResponse me(HttpSession session) {
-        Long memberId = (Long) session.getAttribute(LOGIN_MEMBER_ID);
-
+    /**
+     * 비로그인·세션 만료·DB에 회원 없음(유실된 세션)은 empty — 호출부에서 401 등으로 매핑.
+     */
+    public Optional<MemberResponse> me(HttpSession session) {
+        Long memberId = readMemberId(session);
         if (memberId == null) {
-            throw new IllegalArgumentException("로그인된 사용자가 없습니다.");
+            return Optional.empty();
         }
-        Member member = repository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+        return repository.findById(memberId).map(MemberResponse::from);
+    }
 
-        return MemberResponse.from(member);
+    private static Long readMemberId(HttpSession session) {
+        Object raw = session.getAttribute(LOGIN_MEMBER_ID);
+        if (raw == null) {
+            return null;
+        }
+        if (raw instanceof Number n) {
+            return n.longValue();
+        }
+        return null;
     }
 
     @Transactional
     public MemberResponse updateMe(HttpSession session, UpdateProfileRequest request){
-        Long memberId=(Long) session.getAttribute(LOGIN_MEMBER_ID);
-        if(memberId==null){
+        Long memberId = readMemberId(session);
+        if (memberId == null) {
             throw new IllegalArgumentException("로그인된 사용자가 없습니다.");
         }
         return memberService.updateProfile(memberId,request);
