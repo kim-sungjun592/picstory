@@ -90,7 +90,8 @@ const Signup = () => {
             <h2>회원가입</h2>
             <Button text="뒤로가기"
               className="back"
-              icons
+              backico='wh'
+
               onClick={handleBack} />
           </nav>
         </div>

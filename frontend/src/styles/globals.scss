@@ -71,6 +71,7 @@ ul {
 
 section {
   position: relative;
+  z-index: 0;
   flex: auto;
   overflow-y:auto ;
 
@@ -85,7 +86,10 @@ section {
   position: relative;
   height: 100%;
   max-width: $container-sm;
-  margin: auto
+  margin: auto;
+    @media screen and (max-width:$container-lg) {
+      padding: 0 $space-md;
+    }
 }
 
 /* Glass card helper */

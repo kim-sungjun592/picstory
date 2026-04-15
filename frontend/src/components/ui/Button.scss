@@ -63,7 +63,10 @@
     }
     &.back,
     &.bl {
-        color:$gray-900
+        color:$gray-50
+    }
+    &.wh {
+        color:$gray-800
     }
     &.edit {
         background-color: $warning;
