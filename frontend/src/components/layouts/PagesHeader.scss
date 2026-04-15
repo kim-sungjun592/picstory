@@ -1,9 +1,12 @@
  @use "@/styles/variables" as *;
+
  .pages-header {
      display: flex;
      justify-content: space-between;
      align-items: center;
      margin-bottom: $space-lg;
+     position: relative;
+     background-color: $fg;
 
      .pages-title {
          font-size: $text-xl;

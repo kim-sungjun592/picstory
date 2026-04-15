@@ -9,6 +9,9 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: $space-lg;
+            background-color: $fg;
+    position: relative;
+
 
             .post-title {
                 font-size: $text-xl;
@@ -54,6 +57,9 @@
 
                 .img-wrap {
                     margin: $space-md 0;
+                    img {
+                        width: 100%;
+                    }
                 }
             }
 
