@@ -1,6 +1,6 @@
 import React from 'react'
 import { getTagColor } from '@/hooks/useTagColor'
-const PostTag = ({ tag ,onClick}) => {
+const PostTag = ({ tag, onClick, showDelete = true }) => {
   return (
     <span className='post-tag'
     style={{backgroundColor:getTagColor(tag)}}
@@ -9,13 +9,16 @@ const PostTag = ({ tag ,onClick}) => {
 
         {tag}
       </span>
-      <button 
-      className='post-tag-delete' 
-      onClick={(e)=>{
-        e.preventDefault()
-        e.stopPropagation()
-        onClick?.()
-        }}>X</button>
+      {showDelete && (
+
+        <button
+          className='post-tag-delete'
+          onClick={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            onClick?.()
+          }}>X</button>
+      )}
     </span>
   )
 }

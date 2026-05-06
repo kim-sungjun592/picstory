@@ -1,7 +1,7 @@
 import React from 'react'
 import PostTag from './PostTag'
 import './PostComponentAll.scss'
-const TagFilterBar = ({ tags }) => {
+const TagFilterBar = ({ tags, selectedTag, onChangeTag }) => {
   return (
     <div className='tags'>
       <span>#tag:</span>
@@ -10,6 +10,8 @@ const TagFilterBar = ({ tags }) => {
         <PostTag
           key={`${tag}-${i}`}
           tag={tag}
+          onClick={() => onChangeTag(tag)}
+          showDelete={false}
         />
       ))}
     </div>
