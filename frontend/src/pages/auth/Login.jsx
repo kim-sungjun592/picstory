@@ -5,11 +5,9 @@ import Input from '@/components/ui/Input'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { login as loginApi } from '@/api/auth.api'
 import { useAuth } from '@/store/auth.store'
+
 const Login = () => {
-
   const navigate = useNavigate()
-
-
   const { login, isReady, isAuthed } = useAuth()
 
   const [form, setForm] = useState({
@@ -20,9 +18,13 @@ const Login = () => {
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
 
+  // 카카오 설정 정보 (환경변수나 별도 config 파일로 관리하는 것을 추천합니다)
+  const KAKAO_REST_API_KEY = "YOUR_KAKAO_REST_API_KEY" // 카카오 디벨로퍼스에서 발급받은 REST API 키
+  const KAKAO_REDIRECT_URI = "http://localhost:3000/oauth/callback/kakao" // 카카오 디벨로퍼스에 등록한 Redirect URI
+  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_REST_API_KEY}&redirect_uri=${KAKAO_REDIRECT_URI}&response_type=code`
+
   const handleChange = (e) => {
     const { name, value } = e.target
-
     setForm((prev) => ({
       ...prev,
       [name]: value
@@ -43,14 +45,13 @@ const Login = () => {
     try {
       setIsLoading(true)
       setError('')
-      const data =await loginApi({
+      const data = await loginApi({
         email: form.email.trim(),
         password: form.password
       })
 
       login(data)
       navigate('/app')
-
     } catch (error) {
       setError(error.message || '로그인을 실패했습니다.')
     } finally {
@@ -58,6 +59,10 @@ const Login = () => {
     }
   }
 
+  // 카카오 로그인 링크로 이동
+  const handleKakaoLogin = () => {
+    window.location.href = KAKAO_AUTH_URL
+  }
 
   const handleBack = () => {
     navigate(-1)
@@ -71,7 +76,6 @@ const Login = () => {
     <section className='auth'>
       <div className="inner">
         <div className="auth-box">
-
           <nav>
             <h2>로그인</h2>
             <Button
@@ -82,7 +86,6 @@ const Login = () => {
           </nav>
           <form className='auth-form' onSubmit={handleSumit}>
             <div className="form-group">
-
               <Input
                 type="email"
                 name="email"
@@ -100,6 +103,13 @@ const Login = () => {
             </div>
             <div className="auth-btn-wrap">
               <Button text="로그인" type="submit" className="primary" />
+              {/* 카카오 로그인 버튼 추가 */}
+              <Button 
+                text="카카오 로그인" 
+                type="button" 
+                className="kakao-btn" 
+                onClick={handleKakaoLogin} 
+              />
             </div>
           </form>
           {error && <p className='error-text'> {error}</p>}
