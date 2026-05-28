@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Button from '@/components/ui/Button'
-import './Auth.scss'
+import './Auth.scss' // 아래에 제공된 SCSS 코드를 여기에 덮어씌워주세요.
 import Input from '@/components/ui/Input'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { login as loginApi } from '@/api/auth.api'
@@ -18,9 +18,9 @@ const Login = () => {
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
 
-  // 카카오 설정 정보 (환경변수나 별도 config 파일로 관리하는 것을 추천합니다)
-  const KAKAO_REST_API_KEY = "YOUR_KAKAO_REST_API_KEY" // 카카오 디벨로퍼스에서 발급받은 REST API 키
-  const KAKAO_REDIRECT_URI = "http://localhost:3000/oauth/callback/kakao" // 카카오 디벨로퍼스에 등록한 Redirect URI
+  // 환경변수 사용을 권장합니다 (Vite의 경우 import.meta.env 사용)
+  const KAKAO_REST_API_KEY = import.meta.env.VITE_KAKAO_REST_API_KEY || "YOUR_KAKAO_REST_API_KEY"
+  const KAKAO_REDIRECT_URI = "http://localhost:3000/oauth/callback/kakao"
   const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_REST_API_KEY}&redirect_uri=${KAKAO_REDIRECT_URI}&response_type=code`
 
   const handleChange = (e) => {
@@ -34,11 +34,11 @@ const Login = () => {
   const handleSumit = async (e) => {
     e.preventDefault()
     if (!form.email.trim()) {
-      setError('이메일을 입력해주세요')
+      setError('이메일을 입력해주세요.')
       return
     }
     if (!form.password.trim()) {
-      setError('비밀번호를 입력해주세요')
+      setError('비밀번호를 입력해주세요.')
       return
     }
 
@@ -53,13 +53,12 @@ const Login = () => {
       login(data)
       navigate('/app')
     } catch (error) {
-      setError(error.message || '로그인을 실패했습니다.')
+      setError(error.message || '로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요.')
     } finally {
       setIsLoading(false)
     }
   }
 
-  // 카카오 로그인 링크로 이동
   const handleKakaoLogin = () => {
     window.location.href = KAKAO_AUTH_URL
   }
@@ -73,52 +72,70 @@ const Login = () => {
   }
 
   return (
-    <section className='auth'>
-      <div className="inner">
-        <div className="auth-box">
-          <nav>
-            <h2>로그인</h2>
-            <Button
-              text="뒤로가기"
-              backico='wh'
-              className="back"
-              onClick={handleBack} />
-          </nav>
-          <form className='auth-form' onSubmit={handleSumit}>
-            <div className="form-group">
-              <Input
-                type="email"
-                name="email"
-                value={form.email}
-                onChange={handleChange}
-                placeholder="이메일을 입력하세요"
-              />
-              <Input
-                name="password"
-                value={form.password}
-                onChange={handleChange}
-                type="password"
-                placeholder="비밀번호를 입력하세요"
-              />
-            </div>
-            <div className="auth-btn-wrap">
-              <Button text="로그인" type="submit" className="primary" />
-              {/* 카카오 로그인 버튼 추가 */}
-              <Button 
-                text="카카오 로그인" 
-                type="button" 
-                className="kakao-btn" 
-                onClick={handleKakaoLogin} 
-              />
-            </div>
-          </form>
-          {error && <p className='error-text'> {error}</p>}
-          <div className="auth-now">
-            <span>계정이 없으신가요?</span>
-            <Link to="/signup">
-              <Button text="회원가입하기" icons />
-            </Link>
+    <section className="auth-wrapper">
+      <div className="auth-card">
+        {/* 헤더 및 뒤로가기 */}
+        <nav className="auth-nav">
+          <button className="back-btn" onClick={handleBack} aria-label="뒤로가기">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+          </button>
+        </nav>
+
+        {/* 환영 인사 */}
+        <div className="auth-header">
+          <h2>환영합니다 👋</h2>
+          <p> 로그인하고 이야기를 시작해보세요.</p>
+        </div>
+
+        {/* 로그인 폼 */}
+        <form className="auth-form" onSubmit={handleSumit}>
+          <div className="form-group">
+            <Input
+              type="email"
+              name="email"
+              value={form.email}
+              onChange={handleChange}
+              placeholder="이메일 (example@gmail.com)"
+            />
+            <Input
+              name="password"
+              value={form.password}
+              onChange={handleChange}
+              type="password"
+              placeholder="비밀번호"
+            />
           </div>
+          
+          {error && <p className="error-text">{error}</p>}
+          
+          <Button 
+            text={isLoading ? "로그인 중..." : "이메일로 로그인"} 
+            type="submit" 
+            className="primary-btn" 
+            disabled={isLoading}
+          />
+        </form>
+
+        {/* 소셜 로그인 구분선 */}
+        <div className="divider">
+          <span>또는</span>
+        </div>
+
+        {/* 소셜 로그인 버튼들 */}
+        <div className="social-group">
+          <button type="button" className="kakao-btn" onClick={handleKakaoLogin}>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/e/e3/KakaoTalk_logo.svg" alt="kakao" className="kakao-icon" />
+            카카오로 3초 만에 시작하기
+          </button>
+        </div>
+
+        {/* 하단 회원가입 링크 */}
+        <div className="auth-footer">
+          <span>아직 계정이 없으신가요?</span>
+          <Link to="/signup" className="signup-link">회원가입</Link>
         </div>
       </div>
     </section>
