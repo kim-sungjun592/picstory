@@ -1,0 +1,162 @@
+@use "@/styles/variables" as *;
+
+header {
+    position: fixed;
+    width: 100%;
+    z-index: 5;
+    background-color:   $bg;
+    overflow: hidden;
+
+    .inner {
+        max-width: $container-lg;
+        display: flex;
+        justify-content: space-between;
+        padding: $space-lg 0;
+
+        h1 {
+            width: 136px;
+
+            @media screen and (max-width:$container-sm) {
+                width: 90px;
+            }
+        }
+
+        .right {
+            display: flex;
+            align-items: center;
+            gap: $space-md;
+
+            .header-menu-toggle {
+                display: none;
+            }
+
+            .header-nav-backdrop {
+                display: none;
+                position: fixed;
+                z-index: 8;
+                inset: 0;
+                background: rgba($color: $gray-900, $alpha: .55);
+                opacity: 0;
+                visibility: hidden;
+                pointer-events: none;
+                transition: background $ease, border-color $ease;
+
+
+            }
+
+            #header-nav {
+                display: flex;
+
+                ul {
+
+                    display: flex;
+                }
+            }
+        }
+
+        @media screen and (max-width:$container-lg) {
+            padding-left: $space-md;
+            padding-right: $space-md;
+
+            .right {
+                .header-menu-toggle {
+                    position: relative;
+                    z-index: 9;
+                    display: inline-flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    gap: 6px;
+                    width: 44px;
+                    height: 44px;
+                    border: 1px solid $line;
+                    border-radius: $r-sm;
+                    background: $bg-soft;
+                    cursor: pointer;
+                    transition: background $ease, border-color $ease;
+
+                    &:hover {
+                        background: $bg-hover;
+                        border-color: rgba($fg, .25);
+                    }
+
+                    &__label {
+                        display: none;
+                    }
+
+                    &__bar {
+                        display: block;
+                        width: 20px;
+                        height: 2px;
+                        border-radius: $r-pill;
+                        background-color: $fg;
+                        margin: 0 auto;
+                        transition: tranform $ease, opacity $ease;
+                    }
+                }
+
+                #header-nav {
+                    position: absolute;
+                    top: calc(100% + #{$space-sm});
+                    left: $space-md;
+                    right: $space-md;
+                    z-index: 9;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: stretch;
+                    gap: $space-md;
+                    padding: $space-md;
+                    background-color: $gray-800;
+                    border-radius: $r-md;
+                    backdrop-filter: blur(12px);
+                    box-shadow: $shadow;
+                    opacity: 0;
+                    visibility: hidden;
+                    pointer-events: none;
+                    transform: translateY(-6px);
+                    transition: opacity $ease, visibility $ease, transform $ease;
+                }
+
+                &.is-nav-open {
+                    .header-menu-toggle {
+                        &__bar:nth-child(2) {
+                            transform: translateY(8px) rotate(45deg);
+                        }
+
+                        &__bar:nth-child(3) {
+                            opacity: 0;
+                        }
+
+                        &__bar:nth-child(4) {
+                            transform: translateY(-8px) rotate(-45deg);
+                        }
+                    }
+
+                    .header-nav-backdrop {
+                        opacity: 1;
+                        visibility: visible;
+                        pointer-events: auto;
+                        display: block;
+                    }
+
+                    #header-nav {
+                        opacity: 1;
+                        visibility: visible;
+                        pointer-events: auto;
+                        transform: translateY(0);
+
+                        ul {
+                            flex-direction: column;
+                            align-items: stretch;
+                            gap: $space-sm;
+
+                        }
+
+                        .btn {
+                            // margin: auto;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
